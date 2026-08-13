@@ -1,207 +1,779 @@
-<!-- Projects Section -->
-<section id="projects" class="section projects">
-  <div class="container">
+<!DOCTYPE html>
 
-    <div class="section-label reveal-up">// 03 · Projects</div>
+<html lang="en">
 
-    <h2 class="section-heading reveal-up">
-      Mission<br /><em>Dossier</em>
-    </h2>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vikash Upadhyay — Cyber Security Engineer</title>
+  <meta name="description"
+    content="Vikash Upadhyay — Cyber Security Engineer, SOC Analyst, Threat Hunter & Penetration Tester based in India." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- EmailJS SDK — required for contact form email delivery -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
 
-    <div class="projects-grid">
+<body>
 
-      <!-- MISSION 001 — NCRB STORAGE BLOCKER -->
-      <div class="glass-card mission-card reveal-up">
-        <div class="mc-top">
-          <span class="mc-num">MISSION 001</span>
-          <span class="mc-status completed">● Completed</span>
+  <!-- Custom Cursor -->
+
+  <div id="cursor" class="cursor"></div>
+  <div id="cursor-ring" class="cursor-ring"></div>
+
+  <!-- Loading Screen -->
+
+  <div id="loader" class="loader">
+    <div class="loader-inner">
+      <div class="loader-logo">V<span>U</span></div>
+      <div class="loader-lines">
+        <div class="loader-line" data-text="Initializing Security Modules..."></div>
+        <div class="loader-line" data-text="Loading Threat Intelligence..."></div>
+        <div class="loader-line" data-text="Authenticating..."></div>
+        <div class="loader-line loader-granted" data-text="Access Granted."></div>
+      </div>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+
+  <nav id="navbar" class="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="nav-brand">VU<span class="nav-dot">.</span></a>
+      <ul class="nav-links">
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#experience" class="nav-link">Experience</a></li>
+        <li><a href="#skills" class="nav-link">Skills</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#certificates" class="nav-link">Certifications</a></li>
+        <li><a href="#achievements" class="nav-link">Achievements</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+      <a href="mailto:v.vupadhyay0101@gmail.com" class="nav-cta magnetic-btn">
+        <span>Get In Touch</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#experience" class="mobile-link">Experience</a>
+    <a href="#skills" class="mobile-link">Skills</a>
+    <a href="#projects" class="mobile-link">Projects</a>
+    <a href="#certificates" class="mobile-link">Certifications</a>
+    <a href="#achievements" class="mobile-link">Achievements</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+  </div>
+
+  <!-- Hero Section -->
+
+  <section id="home" class="hero">
+    <canvas id="networkCanvas"></canvas>
+    <div class="hero-content">
+      <div class="hero-badges reveal-up">
+        <div class="badge badge-clearance">
+          <span class="badge-dot pulse"></span>
+          Security Clearance · Active
         </div>
+        <div class="badge badge-available">
+          <span class="badge-dot pulse green"></span>
+          Open to Opportunities
+        </div>
+      </div>
+      <h1 class="hero-name reveal-up">
+        <span class="hero-name-line">VIKASH</span>
+        <span class="hero-name-line hero-name-italic">UPADHYAY</span>
+      </h1>
+      <div class="hero-subtitle reveal-up">
+        <span class="subtitle-static">I am a&nbsp;</span>
+        <span class="subtitle-dynamic" id="typedRole"></span>
+        <span class="subtitle-cursor">|</span>
+      </div>
+      <p class="hero-desc reveal-up">
+        Defending digital frontiers through proactive threat hunting,<br class="br-hide" />
+        penetration testing & enterprise-grade security operations.
+      </p>
+      <div class="hero-actions reveal-up">
+        <a href="#contact" class="btn-primary magnetic-btn"><span>Let's Connect</span></a>
+        <a href="#about" class="btn-ghost magnetic-btn">
+          <span>View Work</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M7 17L17 7M17 7H7M17 7v10" />
+          </svg>
+        </a>
+      </div>
+      <div class="hero-meta reveal-up">
+        <span>📍 Rewa, M.P., India</span>
+        <span>·</span>
+        <span>Chandigarh University · CSE 2026</span>
+        <span>·</span>
+<a href="https://tryhackme.com/p/Vikash0101"
+   target="_blank"
+   rel="noopener noreferrer"
+   class="contact-card">
+    <i class="fa-solid fa-shield-halved"></i>
+    <div>
+        <!-- <h4>TryHackMe</h4> -->
+        <!-- <span>TryHackMe</span> -->
+    </div>
+</a>     
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span>SCROLL</span>
+    </div>
+  </section>
 
-        <h3 class="mc-title">Storage Blocker</h3>
+  <!-- About Section -->
 
-        <p class="mc-sub">
-          Cross-Platform Removable Media Access Blocker
-        </p>
-
-        <p class="mc-desc">
-          Built for the National Crime Records Bureau (NCRB), a lightweight
-          endpoint security prototype that detects and blocks unauthorized
-          USB, HDD, and SD-card devices in real time across Windows, Linux,
-          and macOS to prevent unauthorized data copying and data exfiltration.
-        </p>
-
-        <div class="mc-meta">
-          <div class="mc-meta-item">
-            <span class="mml">Category</span>
-            <span>Endpoint Security</span>
+  <section id="about" class="section about">
+    <div class="container">
+      <div class="section-label reveal-up">// 01 · About</div>
+      <div class="about-grid">
+        <div class="about-text reveal-left">
+          <h2 class="section-heading">Securing the Digital<br /><em>Frontline</em></h2>
+          <p>I'm a Cyber Security Engineer with hands-on experience across offensive and defensive security domains.
+            From hunting adversaries in SOC environments to conducting penetration tests and building modular cyber
+            ranges, I operate at the intersection of threat intelligence and system resilience.</p>
+          <p>Currently interning with <strong>NCRB, Ministry of Home Affairs</strong>, where I assist in cybercrime
+            investigations and digital evidence analysis at a national level.</p>
+          <div class="about-stats">
+            <div class="stat-item"><span class="stat-num">3</span><span class="stat-lbl">Internships</span></div>
+            <div class="stat-item"><span class="stat-num">15+</span><span class="stat-lbl">Security Tools</span></div>
+            <div class="stat-item"><span class="stat-num">1</span><span class="stat-lbl">Research Paper</span></div>
           </div>
+        </div>
+        <div class="about-card-wrap reveal-right">
+          <div class="glass-card about-card">
+            <div class="card-header">
+              <span class="card-tag">Profile</span>
+              <span class="card-status"><span class="pulse-dot"></span> Active</span>
+            </div>
+            <div class="about-card-body">
+              <div class="profile-item"><span class="pi-label">Role</span><span class="pi-value">Cyber Security
+                  Engineer</span></div>
+              <div class="profile-item"><span class="pi-label">Domains</span><span class="pi-value">SOC · Pen Testing ·
+                  DFIR</span></div>
+              <div class="profile-item"><span class="pi-label">University</span><span class="pi-value">Chandigarh
+                  University</span></div>
+              <div class="profile-item"><span class="pi-label">CGPA</span><span class="pi-value">7/10</span></div>
+              <div class="profile-item"><span class="pi-label">Clearance</span><span
+                  class="pi-value accent">Active</span></div>
+              <div class="profile-item"><span class="pi-label">LinkedIn</span><span class="pi-value"><a
+                    href="https://www.linkedin.com/in/vikashupadhya/" target="_blank">VikashUpadhyay</a></span></div>
+              <div class="profile-item"><span class="pi-label">GitHub</span><span class="pi-value"><a
+                    href="https://github.com/Vikashupadhyay01" target="_blank">vikash0101</a></span></div>
+              <div class="profile-item"><span class="pi-label">Phone</span><span class="pi-value">+91-9343546665</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <div class="mc-meta-item">
-            <span class="mml">Date</span>
-            <span>Jun 2026</span>
+  <!-- Experience Section -->
+
+  <section id="experience" class="section experience">
+    <div class="container">
+      <div class="section-label reveal-up">// 02 · Experience</div>
+      <h2 class="section-heading reveal-up">Operational<br /><em>History</em></h2>
+      <div class="timeline">
+
+    <div class="timeline-item reveal-up">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Jun 2026 – Aug 2026</div>
+      <div class="glass-card timeline-card">
+        <div class="tc-header">
+          <div>
+            <h3 class="tc-role">Cyber Security Intern</h3>
+            <p class="tc-org">NCRB · National Crime Records Bureau, MHA</p>
+          </div>
+          <span class="tc-badge">Current</span>
+        </div>
+        <ul class="tc-points">
+          <li>Assisted in cybercrime investigations and digital evidence analysis under the Ministry of Home
+            Affairs.</li>
+          <li>Conducted network traffic analysis and security assessments to identify potential threats and
+            vulnerabilities.</li>
+          <li>Collaborated with security professionals on information security and cybercrime-related projects.</li>
+          <li>Prepared technical reports documenting investigation findings and security recommendations.</li>
+        </ul>
+        <div class="tc-tags">
+          <span>DFIR</span><span>Network Analysis</span><span>Cybercrime Investigation</span><span>Threat
+            Assessment</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal-up">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Jan 2026 – Mar 2026</div>
+      <div class="glass-card timeline-card">
+        <div class="tc-header">
+          <div>
+            <h3 class="tc-role">Cyber Security Intern</h3>
+            <p class="tc-org">CRIAI · Crime Research Investigation Agency of India</p>
+          </div>
+        </div>
+        <ul class="tc-points">
+          <li>Assisted in cybersecurity investigations, vulnerability assessments, and security analysis activities.
+          </li>
+          <li>Performed network scanning, enumeration, and traffic analysis using Kali Linux, Nmap & Wireshark.</li>
+          <li>Supported threat detection, incident response, and digital forensic investigations.</li>
+        </ul>
+        <div class="tc-tags">
+          <span>Kali Linux</span><span>Nmap</span><span>Wireshark</span><span>Incident Response</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal-up">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Sep 2025 – Dec 2025</div>
+      <div class="glass-card timeline-card">
+        <div class="tc-header">
+          <div>
+            <h3 class="tc-role">Cyber Security Intern</h3>
+            <p class="tc-org">Shentinelix Sphere Pvt. Ltd.</p>
+          </div>
+        </div>
+        <ul class="tc-points">
+          <li>Performed vulnerability assessments and penetration testing on web applications and networks.</li>
+          <li>Conducted threat analysis, network security reviews, and system hardening activities.</li>
+        </ul>
+        <div class="tc-tags">
+          <span>Penetration Testing</span><span>Vulnerability Assessment</span><span>System Hardening</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  </section>
+
+  <!-- Projects Section -->
+
+  <section id="projects" class="section projects">
+    <div class="container">
+      <div class="section-label reveal-up">// 03 · Projects</div>
+      <h2 class="section-heading reveal-up">Mission<br /><em>Dossier</em></h2>
+      <div class="projects-grid">
+
+    <div class="glass-card mission-card reveal-up">
+      <div class="mc-top">
+        <span class="mc-num">MISSION 001</span>
+        <span class="mc-status completed">● Completed</span>
+      </div>
+      <h3 class="mc-title">VulneraSim</h3>
+      <p class="mc-sub">Modular Cyber Range for CVE Exploitation & Defense</p>
+      <p class="mc-desc">Designed and deployed a modular cyber range integrating Metasploit, Burp Suite, SQLMap, and
+        Nmap to emulate real-world attack-defense scenarios. Published in HINWEIS Research.</p>
+      <div class="mc-meta">
+        <div class="mc-meta-item"><span class="mml">Category</span><span>Cyber Range</span></div>
+        <div class="mc-meta-item"><span class="mml">Date</span><span>Sep 2025</span></div>
+      </div>
+      <div class="mc-tags">
+        <span>Docker</span><span>Metasploit</span><span>Burp Suite</span><span>SQLMap</span><span>Nmap</span>
+      </div>
+      <div class="mc-footer">
+        <span class="mc-achievement">📄 Research Published · HINWEIS</span>
+      </div>
+    </div>
+
+    <div class="glass-card mission-card reveal-up">
+      <div class="mc-top">
+        <span class="mc-num">MISSION 002</span>
+        <span class="mc-status completed">● Completed</span>
+      </div>
+      <h3 class="mc-title">PhishGuard</h3>
+      <p class="mc-sub">ML-Based Phishing Email Detection System</p>
+      <p class="mc-desc">Developed a machine learning-based phishing email detection system using NLP techniques.
+        Achieved high detection accuracy by classifying malicious and legitimate email samples.</p>
+      <div class="mc-meta">
+        <div class="mc-meta-item"><span class="mml">Category</span><span>AI Security</span></div>
+        <div class="mc-meta-item"><span class="mml">Date</span><span>Apr 2025</span></div>
+      </div>
+      <div class="mc-tags">
+        <span>Python</span><span>NLP</span><span>Scikit-learn</span><span>ML</span>
+      </div>
+      <div class="mc-footer">
+        <span class="mc-achievement">🎯 High Detection Accuracy</span>
+      </div>
+    </div>
+
+    <div class="glass-card mission-card reveal-up">
+      <div class="mc-top">
+        <span class="mc-num">MISSION 003</span>
+        <span class="mc-status ongoing">● Ongoing</span>
+      </div>
+      <h3 class="mc-title">CVE-2023-21554</h3>
+      <p class="mc-sub">Security Research & Responsible Disclosure</p>
+      <p class="mc-desc">Conducted security research and analyzed exploitation techniques in a controlled lab
+        environment. Performed vulnerability assessment using Nessus, Nmap, and Wireshark with documented mitigation
+        recommendations.</p>
+      <div class="mc-meta">
+        <div class="mc-meta-item"><span class="mml">Category</span><span>Vulnerability Research</span></div>
+        <div class="mc-meta-item"><span class="mml">Date</span><span>Aug 2025</span></div>
+      </div>
+      <div class="mc-tags">
+        <span>Nessus</span><span>Nmap</span><span>Wireshark</span><span>CVE Research</span>
+      </div>
+      <div class="mc-footer">
+        <span class="mc-achievement">🔍 Responsible Disclosure</span>
+      </div>
+    </div>
+
+    <div class="glass-card mission-card reveal-up">
+      <div class="mc-top">
+        <span class="mc-num">MISSION 004</span>
+        <span class="mc-status completed">● Completed</span>
+      </div>
+      <h3 class="mc-title">NCRB Audit Tool</h3>
+      <p class="mc-sub">Cross-Platform System Security Audit Tool</p>
+      <p class="mc-desc">Built a cross-platform Python-based system security audit tool for Windows, Linux, and
+        macOS environments. Generates comprehensive security compliance reports for enterprise environments.</p>
+      <div class="mc-meta">
+        <div class="mc-meta-item"><span class="mml">Category</span><span>Security Tool</span></div>
+        <div class="mc-meta-item"><span class="mml">Date</span><span>2026</span></div>
+      </div>
+      <div class="mc-tags">
+        <span>Python</span><span>Bash</span><span>Linux</span><span>Windows</span><span>macOS</span>
+      </div>
+      <div class="mc-footer">
+        <span class="mc-achievement">🛡️ Enterprise Grade</span>
+      </div>
+    </div>
+
+    <div class="glass-card mission-card reveal-up">
+
+  <div class="mc-top">
+    <span class="mc-num">MISSION 005</span>
+    <span class="mc-status ongoing">● Ongoing</span>
+  </div>
+  <h3 class="mc-title">Storage Blocker</h3>
+  <p class="mc-sub">Real-Time Removable Media Access Blocker</p>
+  <p class="mc-desc">Built a lightweight endpoint security tool that monitors USB/removable device insertion events in real time and automatically blocks unauthorized storage devices before mount, preventing data exfiltration and autorun-based malware delivery.</p>
+  <div class="mc-meta">
+    <div class="mc-meta-item"><span class="mml">Category</span><span>Endpoint Security</span></div>
+    <div class="mc-meta-item"><span class="mml">Date</span><span>2026</span></div>
+  </div>
+  <div class="mc-tags">
+    <span>Python</span><span>WMI</span><span>USB Monitoring</span><span>DLP</span>
+  </div>
+  <div class="mc-footer">
+    <span class="mc-achievement">🔒 Real-Time Device Blocking</span>
+  </div>
+</div>
+
+<div class="glass-card mission-card reveal-up">
+          <div class="mc-top">
+            <span class="mc-num">MISSION 006</span>
+            <span class="mc-status completed">● Completed</span>
+          </div>
+          <h3 class="mc-title">Sentry Console</h3>
+          <p class="mc-sub">Browser-Based PCAP Threat Analysis Engine</p>
+          <p class="mc-desc">Built a fully client-side network forensics tool that parses raw .pcap captures byte-by-byte (Ethernet/ARP/IPv4/TCP/UDP/ICMP) directly in the browser — no backend, no data transmission. Implements heuristic detection for port scans, SYN/ICMP floods, brute-force attempts, ARP spoofing, DNS tunneling, and data exfiltration, with auto-generated severity-rated security reports and network flow visualizations.</p>
+          <div class="mc-meta">
+            <div class="mc-meta-item"><span class="mml">Category</span><span>Network Forensics</span></div>
+            <div class="mc-meta-item"><span class="mml">Date</span><span>2026</span></div>
+          </div>
+          <div class="mc-tags">
+            <span>JavaScript</span><span>PCAP Parsing</span><span>Chart.js</span><span>Threat Detection</span><span>DFIR</span>
+          </div>
+          <div class="mc-footer">
+            <span class="mc-achievement">🛰️ Zero-Trust Client-Side Analysis</span>
           </div>
         </div>
 
-        <div class="mc-tags">
-          <span>Python</span>
-          <span>USB Monitoring</span>
-          <span>DLP</span>
-          <span>Windows</span>
-          <span>Linux</span>
-          <span>macOS</span>
+
+
+  </div>
+</div>
+
+  </section>
+
+  <!-- Skills Section -->
+
+  <section id="skills" class="section skills-section">
+    <div class="container">
+      <div class="section-label reveal-up">// 04 · Skills</div>
+      <h2 class="section-heading reveal-up">Arsenal &<br /><em>Capabilities</em></h2>
+      <div class="skills-categories">
+
+    <div class="skill-cat reveal-up">
+      <div class="skill-cat-header">
+        <span class="skill-cat-icon">⚔️</span>
+        <span>Offensive Security</span>
+      </div>
+      <div class="skill-pills">
+        <span class="pill">Nmap</span><span class="pill">Burp Suite</span><span class="pill">Metasploit</span>
+        <span class="pill">SQLMap</span><span class="pill">Nikto</span><span class="pill">Enum4linux</span>
+      </div>
+    </div>
+
+    <div class="skill-cat reveal-up">
+      <div class="skill-cat-header">
+        <span class="skill-cat-icon">🛡️</span>
+        <span>Blue Team / SOC</span>
+      </div>
+      <div class="skill-pills">
+        <span class="pill">Splunk</span><span class="pill">Wazuh</span><span class="pill">Snort</span>
+        <span class="pill">Sigma Rules</span><span class="pill">YARA</span><span class="pill">SIEM</span>
+      </div>
+    </div>
+
+    <div class="skill-cat reveal-up">
+      <div class="skill-cat-header">
+        <span class="skill-cat-icon">🔬</span>
+        <span>Forensics & IR</span>
+      </div>
+      <div class="skill-pills">
+        <span class="pill">Wireshark</span><span class="pill">Volatility</span><span class="pill">Autopsy</span>
+        <span class="pill">Log Analysis</span><span class="pill">DFIR</span>
+      </div>
+    </div>
+
+    <div class="skill-cat reveal-up">
+      <div class="skill-cat-header">
+        <span class="skill-cat-icon">💻</span>
+        <span>Programming</span>
+      </div>
+      <div class="skill-pills">
+        <span class="pill">Python</span><span class="pill">Bash</span><span class="pill">PowerShell</span>
+        <span class="pill">SQL</span>
+      </div>
+    </div>
+
+    <div class="skill-cat reveal-up">
+      <div class="skill-cat-header">
+        <span class="skill-cat-icon">🌐</span>
+        <span>Networking</span>
+      </div>
+      <div class="skill-pills">
+        <span class="pill">TCP/IP</span><span class="pill">DNS</span><span class="pill">Firewalls</span>
+        <span class="pill">VPN</span><span class="pill">IDS/IPS</span>
+      </div>
+    </div>
+
+    <div class="skill-cat reveal-up">
+      <div class="skill-cat-header">
+        <span class="skill-cat-icon">🖥️</span>
+        <span>Operating Systems</span>
+      </div>
+      <div class="skill-pills">
+        <span class="pill">Kali Linux</span><span class="pill">Ubuntu</span><span class="pill">Windows Server</span>
+        <span class="pill">Parrot OS</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  </section>
+
+  <!-- Certificates Section -->
+
+  <section id="certificates" class="section certificates-section">
+    <div class="container">
+      <div class="section-label reveal-up">// 05 · Certifications</div>
+      <h2 class="section-heading reveal-up">Credentials &<br /><em>Certifications</em></h2>
+      <div class="certs-grid">
+        <div class="glass-card cert-card reveal-up">
+          <div class="cert-icon">🔐</div>
+          <div class="cert-body">
+            <h3>Cyber Security</h3>
+            <p class="cert-issuer">Reliance Foundation</p>
+            <p class="cert-year">2025</p>
+          </div>
+          <div class="cert-badge">Verified</div>
+        </div>
+        <div class="glass-card cert-card reveal-up">
+          <div class="cert-icon">🌐</div>
+          <div class="cert-body">
+            <h3>Ethical Hacker</h3>
+            <p class="cert-issuer">CISCO Networking Academy</p>
+            <p class="cert-year">2024</p>
+          </div>
+          <div class="cert-badge">Verified</div>
+        </div>
+        <div class="glass-card cert-card reveal-up">
+          <div class="cert-icon">🎯</div>
+          <div class="cert-body">
+            <h3>Penetration Testing</h3>
+            <p class="cert-issuer">Security Blue Team</p>
+            <p class="cert-year">2025</p>
+          </div>
+          <div class="cert-badge">Verified</div>
+        </div>
+        <div class="glass-card cert-card reveal-up">
+          <div class="cert-icon">☁️</div>
+          <div class="cert-body">
+            <h3>Foundation of Cloud, IoT & Edge ML</h3>
+            <p class="cert-issuer">NPTEL</p>
+            <p class="cert-year">2025</p>
+          </div>
+          <div class="cert-badge">Verified</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Achievements Section -->
+
+  <section id="achievements" class="section achievements-section">
+    <div class="container">
+      <div class="section-label reveal-up">// 06 · Achievements</div>
+      <h2 class="section-heading reveal-up">Impact &<br /><em>Milestones</em></h2>
+      <div class="achievements-grid">
+        <div class="glass-card ach-card reveal-up">
+          <div class="ach-num" data-target="3">0</div>
+          <div class="ach-label">Professional Internships</div>
+          <div class="ach-sub">NCRB · CRIAI · Shentinelix</div>
+        </div>
+        <div class="glass-card ach-card reveal-up">
+          <div class="ach-num" data-target="15" data-suffix="+">0</div>
+          <div class="ach-label">Security Tools Mastered</div>
+          <div class="ach-sub">Offensive & Defensive Stack</div>
+        </div>
+        <div class="glass-card ach-card reveal-up">
+          <div class="ach-num" data-target="100" data-suffix="+">0</div>
+          <div class="ach-label">Labs Completed</div>
+          <div class="ach-sub">TryHackMe · HackTheBox</div>
+        </div>
+        <div class="glass-card ach-card reveal-up">
+          <div class="ach-num" data-target="1">0</div>
+          <div class="ach-label">Research Paper</div>
+          <div class="ach-sub">HINWEIS Research · 2025</div>
+        </div>
+        <div class="glass-card ach-card reveal-up">
+          <div class="ach-num" data-target="4">0</div>
+          <div class="ach-label">Certifications</div>
+          <div class="ach-sub">Cisco · SBT · Reliance · NPTEL</div>
+        </div>
+        <div class="glass-card ach-card reveal-up">
+          <div class="ach-num" data-target="3" data-suffix="+">0</div>
+          <div class="ach-label">CVE Research Projects</div>
+          <div class="ach-sub">Responsible Disclosure</div>
+        </div>
+<div class="glass-card ach-card reveal-up">
+          <div class="ach-num" data-target="1">0</div>
+          <div class="ach-label">Official Appreciation Letter</div>
+          <div class="ach-sub">National Crime Records Bureau, Ministry of Home Affairs</div>
         </div>
 
-        <div class="mc-footer">
-          <span class="mc-achievement">
-            🔒 Real-Time Device Blocking
-          </span>
+  </div>
+</div>
+
+  </section>
+
+  <!-- Contact Section — Premium Redesign -->
+
+  <section id="contact" class="section contact-section-v2">
+    <!-- Ambient blobs -->
+    <div class="contact-blob contact-blob-1" aria-hidden="true"></div>
+    <div class="contact-blob contact-blob-2" aria-hidden="true"></div>
+    <canvas id="contactCanvas" class="contact-canvas" aria-hidden="true"></canvas>
+
+<div class="contact-container">
+  <!-- Header -->
+  <div class="contact-header">
+    <div class="section-label reveal-up">// 07 · Get In Touch</div>
+    <h2 class="contact-main-heading reveal-up">Let's Build Something<br /><em>Secure Together</em></h2>
+    <p class="contact-sub reveal-up">Open to full-time roles, consulting, and collaboration in offensive &amp;
+      defensive security. Response guaranteed within 24 hours.</p>
+  </div>
+
+  <!-- Two-column body -->
+  <div class="contact-body">
+
+    <!-- LEFT — Info Cards -->
+    <div class="contact-left">
+
+      <div class="cinfo-card reveal-up" data-tilt style="--delay:0s">
+        <div class="cinfo-accent-bar"></div>
+        <div class="cinfo-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="20" height="16" rx="3" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+        </div>
+        <div class="cinfo-text">
+          <span class="cinfo-label">Email</span>
+          <a href="mailto:v.vupadhyay0101@gmail.com" class="cinfo-value">v.vupadhyay0101@gmail.com</a>
         </div>
       </div>
 
-
-      <!-- MISSION 002 — SENTRY CONSOLE -->
-      <div class="glass-card mission-card reveal-up">
-        <div class="mc-top">
-          <span class="mc-num">MISSION 002</span>
-          <span class="mc-status completed">● Completed</span>
+      <div class="cinfo-card reveal-up" data-tilt style="--delay:.07s">
+        <div class="cinfo-accent-bar"></div>
+        <div class="cinfo-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path
+              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16.92z" />
+          </svg>
         </div>
-
-        <h3 class="mc-title">Sentry Console</h3>
-
-        <p class="mc-sub">
-          Multi-Format Threat Analysis Platform
-        </p>
-
-        <p class="mc-desc">
-          Developed a privacy-first, client-side threat analysis platform
-          for PCAP captures, PDF documents, EML emails, images, and Office
-          files. Detects suspicious network activity, SYN floods, embedded
-          JavaScript/OpenAction, malicious content, and provides automated
-          domain security audits with unified risk scoring.
-        </p>
-
-        <div class="mc-meta">
-          <div class="mc-meta-item">
-            <span class="mml">Category</span>
-            <span>Threat Analysis</span>
-          </div>
-
-          <div class="mc-meta-item">
-            <span class="mml">Date</span>
-            <span>Aug 2026</span>
-          </div>
-        </div>
-
-        <div class="mc-tags">
-          <span>PCAP</span>
-          <span>PDF</span>
-          <span>EML</span>
-          <span>Office</span>
-          <span>Forensics</span>
-          <span>Threat Detection</span>
-        </div>
-
-        <div class="mc-footer">
-          <span class="mc-achievement">
-            🛡️ Multi-Format Security Analysis
-          </span>
+        <div class="cinfo-text">
+          <span class="cinfo-label">Phone</span>
+          <a href="tel:+919343546665" class="cinfo-value">+91 93435 46665</a>
         </div>
       </div>
 
-
-      <!-- MISSION 003 — VULNERASIM -->
-      <div class="glass-card mission-card reveal-up">
-        <div class="mc-top">
-          <span class="mc-num">MISSION 003</span>
-          <span class="mc-status completed">● Completed</span>
+      <div class="cinfo-card reveal-up" data-tilt style="--delay:.14s">
+        <div class="cinfo-accent-bar"></div>
+        <div class="cinfo-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+            <rect x="2" y="9" width="4" height="12" />
+            <circle cx="4" cy="4" r="2" />
+          </svg>
         </div>
-
-        <h3 class="mc-title">VulneraSim</h3>
-
-        <p class="mc-sub">
-          Modular Cyber Range for CVE Exploitation & Defense
-        </p>
-
-        <p class="mc-desc">
-          Designed and deployed a modular cyber range integrating Metasploit,
-          Burp Suite, SQLMap, and Nmap to emulate real-world attack-defense
-          scenarios. Published in HINWEIS Research.
-        </p>
-
-        <div class="mc-meta">
-          <div class="mc-meta-item">
-            <span class="mml">Category</span>
-            <span>Cyber Range</span>
-          </div>
-
-          <div class="mc-meta-item">
-            <span class="mml">Date</span>
-            <span>Sep 2025</span>
-          </div>
-        </div>
-
-        <div class="mc-tags">
-          <span>Docker</span>
-          <span>Metasploit</span>
-          <span>Burp Suite</span>
-          <span>SQLMap</span>
-          <span>Nmap</span>
-        </div>
-
-        <div class="mc-footer">
-          <span class="mc-achievement">
-            📄 Research Published · HINWEIS
-          </span>
+        <div class="cinfo-text">
+          <span class="cinfo-label">LinkedIn</span>
+          <a href="https://www.linkedin.com/in/vikashupadhya/" target="_blank" class="cinfo-value">VikashUpadhyay</a>
         </div>
       </div>
 
-
-      <!-- MISSION 004 — CVE RESEARCH -->
-      <div class="glass-card mission-card reveal-up">
-        <div class="mc-top">
-          <span class="mc-num">MISSION 004</span>
-          <span class="mc-status ongoing">● Ongoing</span>
+      <div class="cinfo-card reveal-up" data-tilt style="--delay:.21s">
+        <div class="cinfo-accent-bar"></div>
+        <div class="cinfo-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+          </svg>
         </div>
+        <div class="cinfo-text">
+          <span class="cinfo-label">GitHub</span>
+          <a href="https://github.com/Vikashupadhyay01" target="_blank" class="cinfo-value">vikash</a>
+        </div>
+      </div>
 
-        <h3 class="mc-title">CVE-2023-21554</h3>
+      <div class="cinfo-card reveal-up" data-tilt style="--delay:.28s">
+        <div class="cinfo-accent-bar"></div>
+        <div class="cinfo-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+        </div>
+        <div class="cinfo-text">
+          <span class="cinfo-label">Location</span>
+          <span class="cinfo-value">Rewa, Madhya Pradesh, India</span>
+        </div>
+      </div>
 
-        <p class="mc-sub">
-          Security Research & Responsible Disclosure
-        </p>
-
-        <p class="mc-desc">
-          Conducted security research on CVE-2023-21554 and analyzed
-          exploitation techniques in a controlled lab environment.
-          Performed vulnerability assessment using Nessus, Nmap, and
-          Wireshark and documented mitigation recommendations.
-        </p>
-
-        <div class="mc-meta">
-          <div class="mc-meta-item">
-            <span class="mml">Category</span>
-            <span>Vulnerability Research</span>
+      <div class="cinfo-card cinfo-status reveal-up" style="--delay:.35s">
+        <div class="cinfo-accent-bar"></div>
+        <div class="cinfo-icon-wrap status-icon">
+          <span class="status-pulse"></span>
+        </div>
+        <div class="cinfo-text">
+          <span class="cinfo-label">Availability</span>
+          <span class="cinfo-value accent-text">Open to Opportunities</span>
+          <div class="cinfo-roles-mini">
+            <span>SOC Analyst</span>
+            <span>Threat Hunter</span>
+            <span>Blue Team</span>
+            <span>Pen Tester</span>
           </div>
-
-          <div class="mc-meta-item">
-            <span class="mml">Date</span>
-            <span>Aug 2025</span>
-          </div>
-        </div>
-
-        <div class="mc-tags">
-          <span>Nessus</span>
-          <span>Nmap</span>
-          <span>Wireshark</span>
-          <span>CVE Research</span>
-        </div>
-
-        <div class="mc-footer">
-          <span class="mc-achievement">
-            🔍 Responsible Disclosure
-          </span>
         </div>
       </div>
 
     </div>
+
+    <!-- RIGHT — Contact Form -->
+    <div class="contact-right reveal-right">
+      <div class="form-panel">
+        <div class="form-panel-top">
+          <span class="form-panel-tag">Send a Message</span>
+          <span class="form-panel-enc">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            Encrypted
+          </span>
+        </div>
+
+        <form id="contactForm" class="contact-form" novalidate>
+          <div class="form-row">
+            <div class="field-wrap">
+              <input type="text" id="fname" name="name" class="form-input" placeholder=" " autocomplete="off"
+                required />
+              <label for="fname" class="form-label">Full Name</label>
+              <span class="field-focus-bar"></span>
+            </div>
+            <div class="field-wrap">
+              <input type="email" id="femail" name="email" class="form-input" placeholder=" " autocomplete="off"
+                required />
+              <label for="femail" class="form-label">Email Address</label>
+              <span class="field-focus-bar"></span>
+            </div>
+          </div>
+          <div class="field-wrap">
+            <input type="text" id="fsubject" name="subject" class="form-input" placeholder=" " autocomplete="off"
+              required />
+            <label for="fsubject" class="form-label">Subject</label>
+            <span class="field-focus-bar"></span>
+          </div>
+          <div class="field-wrap field-wrap-msg">
+            <textarea id="fmessage" name="message" class="form-input form-textarea" placeholder=" "
+              required></textarea>
+            <label for="fmessage" class="form-label">Message</label>
+            <span class="field-focus-bar"></span>
+          </div>
+          <button type="submit" id="formSubmitBtn" class="form-submit magnetic-btn">
+            <span class="submit-text">Send Message</span>
+            <span class="submit-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 2L11 13" />
+                <path d="M22 2L15 22 11 13 2 9l20-7z" />
+              </svg>
+            </span>
+            <span class="submit-loader" aria-hidden="true"></span>
+          </button>
+          <div id="formSuccess" class="form-success" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+
   </div>
-</section>
+</div>
+
+  </section>
+
+  <!-- Footer -->
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">VU<span>.</span></div>
+      <p class="footer-copy">© 2026 Vikash Upadhyay · Securing the Digital Frontier</p>
+      <p class="footer-tagline">Built with precision · Defended with purpose</p>
+    </div>
+  </footer>
+
+  <!-- Toast notification (success / error) -->
+
+  <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <span id="toastIcon" class="toast-icon"></span>
+    <span id="toastMsg" class="toast-msg"></span>
+  </div>
+
+  <script src="app.js"></script>
+
+</body>
+
+</html>
