@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <!-- EmailJS SDK — required for contact form email delivery -->
@@ -39,7 +39,17 @@
     </div>
   </div>
 
-  <!-- Navigation -->
+  <!-- Header (status bar + nav) -->
+  <header class="site-header" id="siteHeader">
+    <div class="status-bar" id="statusBar">
+      <div class="status-bar-inner">
+        <span class="status-chip"><span class="status-chip-dot"></span> OPEN TO OPPORTUNITIES</span>
+        <span class="status-bar-text">Available for full-time SOC · Threat Hunting · Penetration Testing roles.</span>
+        <a href="#contact" class="status-bar-link">Get in touch →</a>
+      </div>
+      <button class="status-bar-close" id="statusBarClose" aria-label="Dismiss">×</button>
+    </div>
+
   <nav id="navbar" class="navbar">
     <div class="nav-inner">
       <a href="#home" class="nav-brand">VU<span class="nav-dot">.</span></a>
@@ -60,6 +70,7 @@
       </button>
     </div>
   </nav>
+  </header>
 
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu">
@@ -74,50 +85,72 @@
 
   <!-- Hero Section -->
   <section id="home" class="hero">
-    <canvas id="globeCanvas" class="globe-canvas"></canvas>
     <canvas id="networkCanvas"></canvas>
-    <div class="hero-content">
-      <div class="hero-badges reveal-up">
-        <div class="badge badge-clearance">
-          <span class="badge-dot pulse"></span>
-          Security Clearance · Active
+    <div class="hero-grid">
+
+      <div class="hero-content">
+        <div class="section-label reveal-up">Cyber Security Engineer · SOC · Red / Blue Team</div>
+        <h1 class="hero-name reveal-up">
+          <span class="hero-name-line">Securing Systems.</span>
+          <span class="hero-name-line hero-name-italic">Hunting Threats.</span>
+        </h1>
+        <div class="hero-subtitle reveal-up">
+          <span class="subtitle-static">I am a&nbsp;</span>
+          <span class="subtitle-dynamic" id="typedRole"></span>
+          <span class="subtitle-cursor">|</span>
         </div>
-        <div class="badge badge-available">
-          <span class="badge-dot pulse green"></span>
-          Open to Opportunities
+        <p class="hero-desc reveal-up">
+          Vikash Upadhyay — defending digital frontiers through proactive threat hunting,
+          penetration testing & enterprise-grade security operations.
+        </p>
+        <div class="hero-actions reveal-up">
+          <a href="#projects" class="btn-primary magnetic-btn"><span>⚡ View Projects</span></a>
+          <a href="#contact" class="btn-ghost magnetic-btn">
+            <span>Contact Me</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
+          </a>
+        </div>
+        <div class="hero-chips reveal-up">
+          <span class="chip">🔒 Security clearance · Active</span>
+          <span class="chip">🧭 100% hands-on lab practice</span>
+          <span class="chip">🌐 Open-source tooling</span>
+        </div>
+        <div class="hero-meta reveal-up">
+          <span>📍 Rewa, M.P., India</span>
+          <span>·</span>
+          <span>Chandigarh University · CSE 2026</span>
+          <span>·</span>
+          <a href="https://tryhackme.com/p/Vikash0101" target="_blank" rel="noopener noreferrer" class="hero-meta-link">
+            <i class="fa-solid fa-shield-halved"></i> TryHackMe
+          </a>
         </div>
       </div>
-      <h1 class="hero-name reveal-up">
-        <span class="hero-name-line">VIKASH</span>
-        <span class="hero-name-line hero-name-italic">UPADHYAY</span>
-      </h1>
-      <div class="hero-subtitle reveal-up">
-        <span class="subtitle-static">I am a&nbsp;</span>
-        <span class="subtitle-dynamic" id="typedRole"></span>
-        <span class="subtitle-cursor">|</span>
+
+      <!-- Live Telemetry Panel — signature element -->
+      <div class="telemetry-panel reveal-right" id="telemetryPanel">
+        <div class="tp-top">
+          <span class="tp-title"><span class="tp-dot"></span> LIVE OPERATIONS FEED</span>
+          <span class="tp-badge">Local Simulation</span>
+        </div>
+        <div class="tp-stats">
+          <div class="tp-stat">
+            <span class="tp-stat-label">Labs Completed</span>
+            <span class="tp-stat-value">100+</span>
+            <span class="tp-stat-sub">TryHackMe · HackTheBox</span>
+          </div>
+          <div class="tp-stat">
+            <span class="tp-stat-label">Tools Mastered</span>
+            <span class="tp-stat-value">15+</span>
+            <span class="tp-stat-sub">Offense &amp; Defense stack</span>
+          </div>
+        </div>
+        <div class="tp-log" id="tpLog">
+          <!-- rows injected by app.js -->
+        </div>
       </div>
-      <p class="hero-desc reveal-up">
-        Defending digital frontiers through proactive threat hunting,<br class="br-hide" />
-        penetration testing & enterprise-grade security operations.
-      </p>
-      <div class="hero-actions reveal-up">
-        <a href="#contact" class="btn-primary magnetic-btn"><span>Let's Connect</span></a>
-        <a href="#about" class="btn-ghost magnetic-btn">
-          <span>View Work</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M7 17L17 7M17 7H7M17 7v10" />
-          </svg>
-        </a>
-      </div>
-      <div class="hero-meta reveal-up">
-        <span>📍 Rewa, M.P., India</span>
-        <span>·</span>
-        <span>Chandigarh University · CSE 2026</span>
-        <span>·</span>
-        <a href="https://tryhackme.com/p/Vikash0101" target="_blank" rel="noopener noreferrer" class="hero-meta-link">
-          <i class="fa-solid fa-shield-halved"></i> TryHackMe
-        </a>
-      </div>
+
     </div>
     <div class="scroll-indicator">
       <div class="scroll-line"></div>
@@ -128,7 +161,7 @@
   <!-- About Section -->
   <section id="about" class="section about">
     <div class="container">
-      <div class="section-label reveal-up">// 01 · About</div>
+      <div class="section-label reveal-up">About</div>
       <div class="about-grid">
         <div class="about-text reveal-left">
           <h2 class="section-heading">Securing the Digital<br /><em>Frontline</em></h2>
@@ -177,7 +210,7 @@
   <!-- Experience Section -->
   <section id="experience" class="section experience">
     <div class="container">
-      <div class="section-label reveal-up">// 02 · Experience</div>
+      <div class="section-label reveal-up">Experience</div>
       <h2 class="section-heading reveal-up">Operational<br /><em>History</em></h2>
       <div class="timeline">
 
@@ -258,13 +291,13 @@
   <section id="projects" class="section projects">
     <div class="container">
 
-      <div class="section-label reveal-up">// 03 · Projects</div>
+      <div class="section-label reveal-up">Projects</div>
       <h2 class="section-heading reveal-up">Mission<br /><em>Dossier</em></h2>
 
       <div class="projects-grid">
 
         <!-- MISSION 001 — NCRB STORAGE BLOCKER -->
-        <div class="glass-card mission-card reveal-up">
+        <div class="glass-card mission-card reveal-up" data-tilt>
           <div class="mc-top">
             <span class="mc-num">MISSION 001</span>
             <span class="mc-status completed">● Completed</span>
@@ -288,7 +321,7 @@
         </div>
 
         <!-- MISSION 002 — SENTRY CONSOLE -->
-        <div class="glass-card mission-card reveal-up">
+        <div class="glass-card mission-card reveal-up" data-tilt>
           <div class="mc-top">
             <span class="mc-num">MISSION 002</span>
             <span class="mc-status completed">● Completed</span>
@@ -313,7 +346,7 @@
         </div>
 
         <!-- MISSION 003 — VULNERASIM -->
-        <div class="glass-card mission-card reveal-up">
+        <div class="glass-card mission-card reveal-up" data-tilt>
           <div class="mc-top">
             <span class="mc-num">MISSION 003</span>
             <span class="mc-status completed">● Completed</span>
@@ -337,7 +370,7 @@
         </div>
 
         <!-- MISSION 004 — CVE RESEARCH -->
-        <div class="glass-card mission-card reveal-up">
+        <div class="glass-card mission-card reveal-up" data-tilt>
           <div class="mc-top">
             <span class="mc-num">MISSION 004</span>
             <span class="mc-status completed">● Completed</span>
@@ -367,12 +400,12 @@
   <!-- Skills Section -->
   <section id="skills" class="section skills-section">
     <div class="container">
-      <div class="section-label reveal-up">// 04 · Skills</div>
+      <div class="section-label reveal-up">Skills</div>
       <h2 class="section-heading reveal-up">Arsenal &<br /><em>Capabilities</em></h2>
       <div class="skills-categories">
 
         <div class="skill-cat reveal-up">
-          <div class="skill-cat-header"><span class="skill-cat-icon">⚔️</span><span>Offensive Security</span></div>
+          <div class="skill-cat-header"><span class="skill-cat-icon">⚔</span><span>Offensive Security</span></div>
           <div class="skill-pills">
             <span class="pill">Nmap</span><span class="pill">Burp Suite</span><span class="pill">Metasploit</span>
             <span class="pill">SQLMap</span><span class="pill">Nikto</span><span class="pill">Nessus</span>
@@ -380,7 +413,7 @@
         </div>
 
         <div class="skill-cat reveal-up">
-          <div class="skill-cat-header"><span class="skill-cat-icon">🛡️</span><span>Blue Team / SOC</span></div>
+          <div class="skill-cat-header"><span class="skill-cat-icon">◈</span><span>Blue Team / SOC</span></div>
           <div class="skill-pills">
             <span class="pill">Splunk</span><span class="pill">Wazuh</span><span class="pill">Snort</span>
             <span class="pill">Log Analysis</span><span class="pill">SIEM</span>
@@ -388,7 +421,7 @@
         </div>
 
         <div class="skill-cat reveal-up">
-          <div class="skill-cat-header"><span class="skill-cat-icon">🔬</span><span>Forensics & IR</span></div>
+          <div class="skill-cat-header"><span class="skill-cat-icon">◉</span><span>Forensics & IR</span></div>
           <div class="skill-pills">
             <span class="pill">Wireshark</span><span class="pill">Digital Forensics</span><span class="pill">Incident Response</span>
             <span class="pill">DFIR</span>
@@ -396,14 +429,14 @@
         </div>
 
         <div class="skill-cat reveal-up">
-          <div class="skill-cat-header"><span class="skill-cat-icon">💻</span><span>Programming</span></div>
+          <div class="skill-cat-header"><span class="skill-cat-icon">▹</span><span>Programming</span></div>
           <div class="skill-pills">
             <span class="pill">Python</span><span class="pill">Bash</span>
           </div>
         </div>
 
         <div class="skill-cat reveal-up">
-          <div class="skill-cat-header"><span class="skill-cat-icon">🌐</span><span>Security Domains</span></div>
+          <div class="skill-cat-header"><span class="skill-cat-icon">◎</span><span>Security Domains</span></div>
           <div class="skill-pills">
             <span class="pill">Vulnerability Assessment</span><span class="pill">Threat Detection</span>
             <span class="pill">Security Monitoring</span>
@@ -411,7 +444,7 @@
         </div>
 
         <div class="skill-cat reveal-up">
-          <div class="skill-cat-header"><span class="skill-cat-icon">🖥️</span><span>Operating Systems</span></div>
+          <div class="skill-cat-header"><span class="skill-cat-icon">▣</span><span>Operating Systems</span></div>
           <div class="skill-pills">
             <span class="pill">Kali Linux</span><span class="pill">Linux</span><span class="pill">Windows</span>
           </div>
@@ -424,11 +457,11 @@
   <!-- Certificates Section -->
   <section id="certificates" class="section certificates-section">
     <div class="container">
-      <div class="section-label reveal-up">// 05 · Certifications</div>
+      <div class="section-label reveal-up">Certifications</div>
       <h2 class="section-heading reveal-up">Credentials &<br /><em>Certifications</em></h2>
       <div class="certs-grid">
         <div class="glass-card cert-card reveal-up">
-          <div class="cert-icon">🔐</div>
+          <div class="cert-icon">◆</div>
           <div class="cert-body">
             <h3>Cyber Security</h3>
             <p class="cert-issuer">National Crime Records Bureau</p>
@@ -437,7 +470,7 @@
           <div class="cert-badge">Verified</div>
         </div>
         <div class="glass-card cert-card reveal-up">
-          <div class="cert-icon">🌐</div>
+          <div class="cert-icon">◇</div>
           <div class="cert-body">
             <h3>Ethical Hacker</h3>
             <p class="cert-issuer">CISCO Networking Academy</p>
@@ -446,7 +479,7 @@
           <div class="cert-badge">Verified</div>
         </div>
         <div class="glass-card cert-card reveal-up">
-          <div class="cert-icon">🎯</div>
+          <div class="cert-icon">◈</div>
           <div class="cert-body">
             <h3>Penetration Testing</h3>
             <p class="cert-issuer">Security Blue Team</p>
@@ -455,7 +488,7 @@
           <div class="cert-badge">Verified</div>
         </div>
         <div class="glass-card cert-card reveal-up">
-          <div class="cert-icon">☁️</div>
+          <div class="cert-icon">◐</div>
           <div class="cert-body">
             <h3>Foundation of Cloud, IoT & Edge ML</h3>
             <p class="cert-issuer">NPTEL</p>
@@ -470,7 +503,7 @@
   <!-- Achievements Section -->
   <section id="achievements" class="section achievements-section">
     <div class="container">
-      <div class="section-label reveal-up">// 06 · Achievements</div>
+      <div class="section-label reveal-up">Achievements</div>
       <h2 class="section-heading reveal-up">Impact &<br /><em>Milestones</em></h2>
       <div class="achievements-grid">
         <div class="glass-card ach-card reveal-up">
@@ -520,7 +553,7 @@
 
     <div class="contact-container">
       <div class="contact-header">
-        <div class="section-label reveal-up">// 07 · Get In Touch</div>
+        <div class="section-label reveal-up" style="justify-content:center">Get In Touch</div>
         <h2 class="contact-main-heading reveal-up">Let's Build Something<br /><em>Secure Together</em></h2>
         <p class="contact-sub reveal-up">Open to full-time roles, consulting, and collaboration in offensive &amp;
           defensive security. Response guaranteed within 24 hours.</p>
