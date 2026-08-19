@@ -41,13 +41,185 @@ if (navToggle && mobileMenu) {
   mobileMenu.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
 }
 
+/* ═══════════════════════════════════════════
+   ROTATING WIREFRAME GLOBE — signature element
+   A continuously spinning threat-intel globe made of
+   latitude / longitude wireframe lines with glowing
+   nodes, rendered on canvas (no external 3D library).
+═══════════════════════════════════════════ */
+(function initGlobe() {
+  const canvas = document.getElementById('globeCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, cx, cy, R;
+  let rotation = 0;
+  const LAT_STEPS = 8;    // latitude rings
+  const LON_STEPS = 12;   // longitude rings
+  const SEGMENTS = 64;    // resolution per ring
+
+  // A handful of "threat node" points at fixed lat/lon, pulsing gently
+  const nodes = [
+    { lat: 28.6, lon: 77.2, label: 'IN' },   // Delhi region
+    { lat: 40.7, lon: -74.0, label: 'US' },
+    { lat: 51.5, lon: -0.1, label: 'UK' },
+    { lat: 35.7, lon: 139.7, label: 'JP' },
+    { lat: -33.9, lon: 151.2, label: 'AU' },
+    { lat: 52.5, lon: 13.4, label: 'DE' },
+    { lat: 1.35, lon: 103.8, label: 'SG' },
+    { lat: -23.5, lon: -46.6, label: 'BR' },
+  ];
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    cx = W * 0.72;              // offset right of center, behind headline
+    cy = H * 0.42;
+    R = Math.min(W, H) * 0.30;
+    if (window.innerWidth <= 768) { cx = W * 0.5; cy = H * 0.28; R = Math.min(W, H) * 0.24; }
+  }
+
+  // Project a 3D point (unit sphere) with current rotation to 2D screen space
+  function project(x, y, z) {
+    // rotate around Y axis
+    const cosA = Math.cos(rotation), sinA = Math.sin(rotation);
+    const xr = x * cosA - z * sinA;
+    const zr = x * sinA + z * cosA;
+    // slight tilt around X axis for a more natural globe angle
+    const tilt = 0.35;
+    const cosT = Math.cos(tilt), sinT = Math.sin(tilt);
+    const yr = y * cosT - zr * sinT;
+    const zf = y * sinT + zr * cosT;
+
+    const scale = R;
+    const persp = 1 / (2.4 - zf); // simple perspective factor
+    return {
+      x: cx + xr * scale * persp,
+      y: cy + yr * scale * persp,
+      z: zf,
+      persp
+    };
+  }
+
+  function sphericalToCartesian(latDeg, lonDeg) {
+    const lat = (latDeg * Math.PI) / 180;
+    const lon = (lonDeg * Math.PI) / 180;
+    return {
+      x: Math.cos(lat) * Math.sin(lon),
+      y: -Math.sin(lat),
+      z: Math.cos(lat) * Math.cos(lon)
+    };
+  }
+
+  function drawRing(points, alphaBase) {
+    ctx.beginPath();
+    let started = false;
+    for (let i = 0; i <= points.length; i++) {
+      const p = points[i % points.length];
+      if (p.z < -0.15) { started = false; continue; } // hide far side to reduce clutter
+      if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+      else ctx.lineTo(p.x, p.y);
+    }
+    const alpha = alphaBase;
+    ctx.strokeStyle = `rgba(110,231,255,${alpha})`;
+    ctx.lineWidth = 0.7;
+    ctx.stroke();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Outer glow disc
+    const grad = ctx.createRadialGradient(cx, cy, R * 0.2, cx, cy, R * 1.15);
+    grad.addColorStop(0, 'rgba(124,58,237,0.10)');
+    grad.addColorStop(1, 'rgba(124,58,237,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, R * 1.15, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Latitude rings (horizontal circles)
+    for (let i = 1; i < LAT_STEPS; i++) {
+      const latDeg = -90 + (180 / LAT_STEPS) * i;
+      const pts = [];
+      for (let s = 0; s <= SEGMENTS; s++) {
+        const lonDeg = (360 / SEGMENTS) * s;
+        const v = sphericalToCartesian(latDeg, lonDeg);
+        pts.push(project(v.x, v.y, v.z));
+      }
+      drawRing(pts, 0.16);
+    }
+
+    // Longitude rings (vertical half-meridians)
+    for (let i = 0; i < LON_STEPS; i++) {
+      const lonDeg = (360 / LON_STEPS) * i;
+      const pts = [];
+      for (let s = 0; s <= SEGMENTS; s++) {
+        const latDeg = -90 + (180 / SEGMENTS) * s;
+        const v = sphericalToCartesian(latDeg, lonDeg);
+        pts.push(project(v.x, v.y, v.z));
+      }
+      drawRing(pts, 0.13);
+    }
+
+    // Outer rim circle for a crisp edge
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(110,231,255,0.22)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Threat nodes with pulse + connecting arcs to a "home" node (India)
+    const projected = nodes.map(n => {
+      const lonAnim = n.lon + (rotation * 180) / Math.PI; // counter for label consistency (unused visually)
+      const v = sphericalToCartesian(n.lat, n.lon);
+      return { ...project(v.x, v.y, v.z), raw: v };
+    });
+
+    const home = projected[0];
+    projected.forEach((p, idx) => {
+      if (p.z < -0.15) return; // behind globe
+      const alpha = Math.max(0.15, Math.min(1, (p.z + 1) / 1.6));
+
+      // connecting arc to home node (skip self)
+      if (idx !== 0 && home.z > -0.15) {
+        ctx.beginPath();
+        const midX = (p.x + home.x) / 2;
+        const midY = (p.y + home.y) / 2 - 24;
+        ctx.moveTo(home.x, home.y);
+        ctx.quadraticCurveTo(midX, midY, p.x, p.y);
+        ctx.strokeStyle = `rgba(124,58,237,${0.18 * alpha})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+
+      // node glow
+      const pulse = 1 + Math.sin(Date.now() / 600 + idx) * 0.35;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2.4 * pulse, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(110,231,255,${0.9 * alpha})`;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 6 * pulse, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(110,231,255,${0.15 * alpha})`;
+      ctx.fill();
+    });
+
+    rotation += 0.0016; // continuous slow rotation
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+
 // ── Hero Network Canvas ──
 (function initCanvas() {
   const canvas = document.getElementById('networkCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let W, H, nodes = [], mouse = { x: 0, y: 0 };
-  const NODE_COUNT = 60, CONNECT_DIST = 130;
+  const NODE_COUNT = 46, CONNECT_DIST = 130;
 
   function resize() {
     W = canvas.width = canvas.offsetWidth;
@@ -74,7 +246,7 @@ if (navToggle && mobileMenu) {
       if (n.y < 0 || n.y > H) n.vy *= -1;
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(110,231,255,0.4)';
+      ctx.fillStyle = 'rgba(110,231,255,0.35)';
       ctx.fill();
     });
     for (let i = 0; i < nodes.length; i++) {
@@ -85,7 +257,7 @@ if (navToggle && mobileMenu) {
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
           ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.strokeStyle = `rgba(110,231,255,${0.15 * (1 - dist / CONNECT_DIST)})`;
+          ctx.strokeStyle = `rgba(110,231,255,${0.12 * (1 - dist / CONNECT_DIST)})`;
           ctx.lineWidth = .6;
           ctx.stroke();
         }
@@ -103,7 +275,7 @@ if (navToggle && mobileMenu) {
 (function initTyped() {
   const el = document.getElementById('typedRole');
   if (!el) return;
-  const roles = ['Cyber Security Engineer','SOC Analyst','Threat Hunter','Incident Responder','Penetration Tester','Blue Team Engineer','Bug Bounty Hunter'];
+  const roles = ['Cyber Security Engineer', 'SOC Analyst', 'Threat Hunter', 'Incident Responder', 'Penetration Tester', 'Blue Team Engineer', 'Bug Bounty Hunter'];
   let ri = 0, ci = 0, deleting = false;
   function type() {
     const role = roles[ri];
@@ -151,48 +323,6 @@ if (navToggle && mobileMenu) {
   document.querySelectorAll('.ach-num').forEach(el => obs.observe(el));
 })();
 
-// ── Terminal Animation ──
-(function initTerminal() {
-  const cmdEl = document.getElementById('termCmd');
-  const outEl = document.getElementById('termOutput');
-  if (!cmdEl || !outEl) return;
-  const cmd = 'connect --vikash';
-  const entries = [
-    { key: 'LinkedIn', val: 'VikashUpadhyay', check: true },
-    { key: 'GitHub', val: 'vikash0101', check: true },
-    { key: 'Email', val: 'v.vupadhyay0101@gmail.com', check: true },
-    { key: 'Phone', val: '+91-9343546665', check: true },
-    { key: 'Status', val: 'Open to Work ✓', check: true },
-  ];
-  let triggered = false;
-  const section = document.getElementById('contact');
-  const obs = new IntersectionObserver(e => {
-    if (e[0].isIntersecting && !triggered) {
-      triggered = true;
-      let i = 0;
-      const typeCmd = setInterval(() => {
-        cmdEl.textContent = cmd.slice(0, ++i);
-        if (i >= cmd.length) {
-          clearInterval(typeCmd);
-          entries.forEach((entry, idx) => {
-            setTimeout(() => {
-              const div = document.createElement('div');
-              div.className = 't-entry';
-              div.innerHTML = `<span class="t-key">${entry.key}</span><span class="t-val">${entry.val}</span>${entry.check ? '<span class="t-check">✓</span>' : ''}`;
-              div.style.opacity = 0;
-              div.style.transform = 'translateY(8px)';
-              div.style.transition = 'all .4s';
-              outEl.appendChild(div);
-              setTimeout(() => { div.style.opacity = 1; div.style.transform = 'none'; }, 50);
-            }, idx * 300);
-          });
-        }
-      }, 70);
-    }
-  }, { threshold: 0.4 });
-  if (section) obs.observe(section);
-})();
-
 // ── Magnetic Buttons ──
 document.querySelectorAll('.magnetic-btn').forEach(btn => {
   btn.addEventListener('mousemove', e => {
@@ -213,7 +343,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 /* ═══════════════════════════════════════════
-   CONTACT SECTION v2 — JS
+   CONTACT SECTION — JS
 ═══════════════════════════════════════════ */
 
 // ── Contact micro-canvas (background nodes) ──
@@ -224,25 +354,27 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   let W, H, pts = [];
   const N = 30;
   function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
-  function mkPt() { return { x: Math.random()*W, y: Math.random()*H, vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3 }; }
-  function init() { pts = Array.from({length:N}, mkPt); }
+  function mkPt() { return { x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .3, vy: (Math.random() - .5) * .3 }; }
+  function init() { pts = Array.from({ length: N }, mkPt); }
   function tick() {
-    ctx.clearRect(0,0,W,H);
+    ctx.clearRect(0, 0, W, H);
     pts.forEach(p => {
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>W) p.vx*=-1;
-      if(p.y<0||p.y>H) p.vy*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,1.5,0,Math.PI*2);
-      ctx.fillStyle='rgba(110,231,255,.35)'; ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(110,231,255,.35)'; ctx.fill();
     });
-    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++) {
-      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d=Math.hypot(dx,dy);
-      if(d<120){ ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y);
-        ctx.strokeStyle=`rgba(110,231,255,${.12*(1-d/120)})`; ctx.lineWidth=.5; ctx.stroke(); }
+    for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+      const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d = Math.hypot(dx, dy);
+      if (d < 120) {
+        ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
+        ctx.strokeStyle = `rgba(110,231,255,${.12 * (1 - d / 120)})`; ctx.lineWidth = .5; ctx.stroke();
+      }
     }
     requestAnimationFrame(tick);
   }
-  window.addEventListener('resize', ()=>{ resize(); init(); });
+  window.addEventListener('resize', () => { resize(); init(); });
   resize(); init(); tick();
 })();
 
@@ -250,9 +382,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 document.querySelectorAll('[data-tilt]').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
-    const x = (e.clientX - r.left - r.width/2) / (r.width/2);
-    const y = (e.clientY - r.top - r.height/2) / (r.height/2);
-    card.style.transform = `translateY(-8px) rotateX(${-y*4}deg) rotateY(${x*4}deg) scale(1.01)`;
+    const x = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+    const y = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+    card.style.transform = `translateY(-8px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg) scale(1.01)`;
   });
   card.addEventListener('mouseleave', () => { card.style.transform = ''; });
 });
@@ -275,7 +407,6 @@ document.querySelectorAll('[data-tilt]').forEach(card => {
   const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';   // ← paste here
   // ════════════════════════════════════════════════════════════
 
-  // Guard: warn in console if not yet configured
   const configured = ![EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID]
     .some(v => v.startsWith('YOUR_'));
 
@@ -283,33 +414,29 @@ document.querySelectorAll('[data-tilt]').forEach(card => {
     console.warn(
       '[ContactForm] EmailJS is NOT configured yet.\n' +
       'Open app.js and replace YOUR_PUBLIC_KEY, YOUR_SERVICE_ID, YOUR_TEMPLATE_ID\n' +
-      'with real values from https://www.emailjs.com\n' +
-      'See the comments above initContactForm() for step-by-step instructions.'
+      'with real values from https://www.emailjs.com'
     );
   }
 
-  // Initialise EmailJS with public key
   if (typeof emailjs !== 'undefined') {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
   }
 
-  const form    = document.getElementById('contactForm');
-  const btn     = document.getElementById('formSubmitBtn');
+  const form = document.getElementById('contactForm');
+  const btn = document.getElementById('formSubmitBtn');
   const feedback = document.getElementById('formSuccess');
   if (!form || !btn) return;
 
-  let isSending = false; // prevent duplicate submissions
+  let isSending = false;
 
-  // ── Field validation ──
   function validate() {
     const fields = {
-      name:    { el: form.querySelector('#fname'),    label: 'Full Name' },
-      email:   { el: form.querySelector('#femail'),   label: 'Email Address' },
+      name: { el: form.querySelector('#fname'), label: 'Full Name' },
+      email: { el: form.querySelector('#femail'), label: 'Email Address' },
       subject: { el: form.querySelector('#fsubject'), label: 'Subject' },
       message: { el: form.querySelector('#fmessage'), label: 'Message' },
     };
     const errors = [];
-
     Object.values(fields).forEach(({ el, label }) => {
       el.classList.remove('input-error');
       const val = el.value.trim();
@@ -318,34 +445,30 @@ document.querySelectorAll('[data-tilt]').forEach(card => {
         errors.push('Please enter a valid email address.'); el.classList.add('input-error');
       }
     });
-
     return errors;
   }
 
-  // ── Toast helper ──
   function showToast(type, message) {
-    const toast   = document.getElementById('toast');
-    const toastMsg  = document.getElementById('toastMsg');
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
     const toastIcon = document.getElementById('toastIcon');
     if (!toast) return;
     toast.className = `toast toast-${type} toast-show`;
     toastIcon.textContent = type === 'success' ? '✓' : '✕';
-    toastMsg.textContent  = message;
+    toastMsg.textContent = message;
     clearTimeout(toast._timer);
     toast._timer = setTimeout(() => { toast.className = 'toast'; }, 6000);
   }
 
-  // ── Inline feedback helper ──
   function showFeedback(type, message) {
     if (!feedback) return;
     feedback.textContent = message;
-    feedback.className   = `form-success ${type === 'error' ? 'form-error' : ''} show`;
+    feedback.className = `form-success ${type === 'error' ? 'form-error' : ''} show`;
   }
   function hideFeedback() {
     if (feedback) feedback.className = 'form-success';
   }
 
-  // ── Button state helpers ──
   function setBtnLoading() {
     btn.classList.add('loading');
     btn.disabled = true;
@@ -355,12 +478,9 @@ document.querySelectorAll('[data-tilt]').forEach(card => {
     btn.disabled = false;
     const txt = btn.querySelector('.submit-text');
     if (txt) txt.textContent = label;
-    btn.style.background = success
-      ? 'linear-gradient(135deg,#22c55e,#16a34a)'
-      : '';
+    btn.style.background = success ? 'linear-gradient(135deg,#22c55e,#16a34a)' : '';
   }
 
-  // ── Form submit ──
   form.addEventListener('submit', async e => {
     e.preventDefault();
     if (isSending) return;
@@ -373,7 +493,6 @@ document.querySelectorAll('[data-tilt]').forEach(card => {
       return;
     }
 
-    // Not configured yet → simulate success so UI can be tested
     if (!configured) {
       console.info('[ContactForm] Running in demo mode (EmailJS not configured).');
       isSending = true;
@@ -386,24 +505,22 @@ document.querySelectorAll('[data-tilt]').forEach(card => {
       return;
     }
 
-    // Real EmailJS send
     isSending = true;
     setBtnLoading();
 
     try {
       const templateParams = {
-        from_name:  form.querySelector('#fname').value.trim(),
+        from_name: form.querySelector('#fname').value.trim(),
         from_email: form.querySelector('#femail').value.trim(),
-        subject:    form.querySelector('#fsubject').value.trim(),
-        message:    form.querySelector('#fmessage').value.trim(),
-        to_email:   'v.vupadhyay0101@gmail.com',
+        subject: form.querySelector('#fsubject').value.trim(),
+        message: form.querySelector('#fmessage').value.trim(),
+        to_email: 'v.vupadhyay0101@gmail.com',
       };
 
       console.info('[ContactForm] Sending via EmailJS…', templateParams);
-
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-
       console.info('[ContactForm] Email delivered successfully.');
+
       setBtnReset('Message Sent ✓', true);
       showFeedback('success', '✓ Message delivered! I\'ll respond within 24 hours.');
       showToast('success', 'Message sent successfully! Expect a reply within 24 hours.');
@@ -425,7 +542,6 @@ document.querySelectorAll('[data-tilt]').forEach(card => {
     }
   });
 
-  // Clear per-field error styling on input
   form.querySelectorAll('.form-input').forEach(el => {
     el.addEventListener('input', () => el.classList.remove('input-error'));
   });
