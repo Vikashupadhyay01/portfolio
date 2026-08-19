@@ -75,7 +75,7 @@ if (navToggle && mobileMenu) {
     cx = W * 0.72;              // offset right of center, behind headline
     cy = H * 0.42;
     R = Math.min(W, H) * 0.30;
-    if (window.innerWidth <= 768) { cx = W * 0.5; cy = H * 0.28; R = Math.min(W, H) * 0.24; }
+    if (window.innerWidth <= 768) { cx = W * 0.5; cy = H * 0.24; R = Math.min(W, H) * 0.22; }
   }
 
   // Project a 3D point (unit sphere) with current rotation to 2D screen space
@@ -120,7 +120,7 @@ if (navToggle && mobileMenu) {
       else ctx.lineTo(p.x, p.y);
     }
     const alpha = alphaBase;
-    ctx.strokeStyle = `rgba(110,231,255,${alpha})`;
+    ctx.strokeStyle = `rgba(91,141,239,${alpha})`;
     ctx.lineWidth = 0.7;
     ctx.stroke();
   }
@@ -130,8 +130,8 @@ if (navToggle && mobileMenu) {
 
     // Outer glow disc
     const grad = ctx.createRadialGradient(cx, cy, R * 0.2, cx, cy, R * 1.15);
-    grad.addColorStop(0, 'rgba(124,58,237,0.10)');
-    grad.addColorStop(1, 'rgba(124,58,237,0)');
+    grad.addColorStop(0, 'rgba(91,141,239,0.09)');
+    grad.addColorStop(1, 'rgba(91,141,239,0)');
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.arc(cx, cy, R * 1.15, 0, Math.PI * 2);
@@ -146,7 +146,7 @@ if (navToggle && mobileMenu) {
         const v = sphericalToCartesian(latDeg, lonDeg);
         pts.push(project(v.x, v.y, v.z));
       }
-      drawRing(pts, 0.16);
+      drawRing(pts, 0.14);
     }
 
     // Longitude rings (vertical half-meridians)
@@ -158,19 +158,18 @@ if (navToggle && mobileMenu) {
         const v = sphericalToCartesian(latDeg, lonDeg);
         pts.push(project(v.x, v.y, v.z));
       }
-      drawRing(pts, 0.13);
+      drawRing(pts, 0.11);
     }
 
     // Outer rim circle for a crisp edge
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(110,231,255,0.22)';
+    ctx.strokeStyle = 'rgba(91,141,239,0.2)';
     ctx.lineWidth = 1;
     ctx.stroke();
 
     // Threat nodes with pulse + connecting arcs to a "home" node (India)
     const projected = nodes.map(n => {
-      const lonAnim = n.lon + (rotation * 180) / Math.PI; // counter for label consistency (unused visually)
       const v = sphericalToCartesian(n.lat, n.lon);
       return { ...project(v.x, v.y, v.z), raw: v };
     });
@@ -187,7 +186,7 @@ if (navToggle && mobileMenu) {
         const midY = (p.y + home.y) / 2 - 24;
         ctx.moveTo(home.x, home.y);
         ctx.quadraticCurveTo(midX, midY, p.x, p.y);
-        ctx.strokeStyle = `rgba(124,58,237,${0.18 * alpha})`;
+        ctx.strokeStyle = `rgba(227,168,87,${0.16 * alpha})`;
         ctx.lineWidth = 0.8;
         ctx.stroke();
       }
@@ -196,11 +195,11 @@ if (navToggle && mobileMenu) {
       const pulse = 1 + Math.sin(Date.now() / 600 + idx) * 0.35;
       ctx.beginPath();
       ctx.arc(p.x, p.y, 2.4 * pulse, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(110,231,255,${0.9 * alpha})`;
+      ctx.fillStyle = `rgba(143,169,214,${0.9 * alpha})`;
       ctx.fill();
       ctx.beginPath();
       ctx.arc(p.x, p.y, 6 * pulse, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(110,231,255,${0.15 * alpha})`;
+      ctx.fillStyle = `rgba(91,141,239,${0.15 * alpha})`;
       ctx.fill();
     });
 
@@ -219,7 +218,7 @@ if (navToggle && mobileMenu) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let W, H, nodes = [], mouse = { x: 0, y: 0 };
-  const NODE_COUNT = 46, CONNECT_DIST = 130;
+  const NODE_COUNT = 40, CONNECT_DIST = 130;
 
   function resize() {
     W = canvas.width = canvas.offsetWidth;
@@ -232,7 +231,7 @@ if (navToggle && mobileMenu) {
       nodes.push({
         x: Math.random() * W, y: Math.random() * H,
         vx: (Math.random() - .5) * .4, vy: (Math.random() - .5) * .4,
-        r: Math.random() * 2 + 1
+        r: Math.random() * 1.6 + 0.8
       });
     }
   }
@@ -246,7 +245,7 @@ if (navToggle && mobileMenu) {
       if (n.y < 0 || n.y > H) n.vy *= -1;
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(110,231,255,0.35)';
+      ctx.fillStyle = 'rgba(143,169,214,0.3)';
       ctx.fill();
     });
     for (let i = 0; i < nodes.length; i++) {
@@ -257,7 +256,7 @@ if (navToggle && mobileMenu) {
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
           ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.strokeStyle = `rgba(110,231,255,${0.12 * (1 - dist / CONNECT_DIST)})`;
+          ctx.strokeStyle = `rgba(91,141,239,${0.1 * (1 - dist / CONNECT_DIST)})`;
           ctx.lineWidth = .6;
           ctx.stroke();
         }
@@ -352,7 +351,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let W, H, pts = [];
-  const N = 30;
+  const N = 28;
   function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
   function mkPt() { return { x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .3, vy: (Math.random() - .5) * .3 }; }
   function init() { pts = Array.from({ length: N }, mkPt); }
@@ -363,13 +362,13 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       if (p.x < 0 || p.x > W) p.vx *= -1;
       if (p.y < 0 || p.y > H) p.vy *= -1;
       ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(110,231,255,.35)'; ctx.fill();
+      ctx.fillStyle = 'rgba(143,169,214,.32)'; ctx.fill();
     });
     for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
       const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d = Math.hypot(dx, dy);
       if (d < 120) {
         ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
-        ctx.strokeStyle = `rgba(110,231,255,${.12 * (1 - d / 120)})`; ctx.lineWidth = .5; ctx.stroke();
+        ctx.strokeStyle = `rgba(91,141,239,${.11 * (1 - d / 120)})`; ctx.lineWidth = .5; ctx.stroke();
       }
     }
     requestAnimationFrame(tick);
@@ -478,7 +477,7 @@ document.querySelectorAll('[data-tilt]').forEach(card => {
     btn.disabled = false;
     const txt = btn.querySelector('.submit-text');
     if (txt) txt.textContent = label;
-    btn.style.background = success ? 'linear-gradient(135deg,#22c55e,#16a34a)' : '';
+    btn.style.background = success ? '#4ADE80' : '';
   }
 
   form.addEventListener('submit', async e => {
