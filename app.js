@@ -33,6 +33,14 @@ window.addEventListener('scroll', () => {
   if (nav) nav.classList.toggle('scrolled', window.scrollY > 40);
 });
 
+// ── Status Bar Dismiss ──
+(function initStatusBar() {
+  const bar = document.getElementById('statusBar');
+  const closeBtn = document.getElementById('statusBarClose');
+  if (!bar || !closeBtn) return;
+  closeBtn.addEventListener('click', () => bar.classList.add('hidden'));
+})();
+
 // ── Mobile Menu ──
 const navToggle = document.getElementById('navToggle');
 const mobileMenu = document.getElementById('mobileMenu');
@@ -42,12 +50,10 @@ if (navToggle && mobileMenu) {
 }
 
 /* ═══════════════════════════════════════════
-   ROTATING WIREFRAME GLOBE — signature element
-   A continuously spinning threat-intel globe made of
-   latitude / longitude wireframe lines with glowing
-   nodes, rendered on canvas (no external 3D library).
+   (legacy globe code removed — replaced by the
+   live telemetry panel + angular network background)
 ═══════════════════════════════════════════ */
-(function initGlobe() {
+(function initGlobeUnused() {
   const canvas = document.getElementById('globeCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -218,36 +224,45 @@ if (navToggle && mobileMenu) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let W, H, nodes = [], mouse = { x: 0, y: 0 };
-  const NODE_COUNT = 40, CONNECT_DIST = 130;
 
   function resize() {
     W = canvas.width = canvas.offsetWidth;
     H = canvas.height = canvas.offsetHeight;
   }
 
+  // Sparse, angular topology — nodes on a loose jittered grid rather than
+  // fully random scatter, so lines read as deliberate network paths.
   function createNodes() {
     nodes = [];
-    for (let i = 0; i < NODE_COUNT; i++) {
-      nodes.push({
-        x: Math.random() * W, y: Math.random() * H,
-        vx: (Math.random() - .5) * .4, vy: (Math.random() - .5) * .4,
-        r: Math.random() * 1.6 + 0.8
-      });
+    const cols = Math.max(5, Math.round(W / 220));
+    const rows = Math.max(4, Math.round(H / 220));
+    for (let i = 0; i <= cols; i++) {
+      for (let j = 0; j <= rows; j++) {
+        if (Math.random() > 0.62) continue; // skip most grid points → sparse
+        nodes.push({
+          x: (W / cols) * i + (Math.random() - 0.5) * 90,
+          y: (H / rows) * j + (Math.random() - 0.5) * 90,
+          vx: (Math.random() - .5) * .12, vy: (Math.random() - .5) * .12,
+          r: Math.random() * 1.3 + (Math.random() > 0.85 ? 2.2 : 0.9),
+          big: Math.random() > 0.85
+        });
+      }
     }
   }
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
     nodes.forEach(n => {
-      n.x += n.vx + (mouse.x - W / 2) * 0.00008;
-      n.y += n.vy + (mouse.y - H / 2) * 0.00008;
-      if (n.x < 0 || n.x > W) n.vx *= -1;
-      if (n.y < 0 || n.y > H) n.vy *= -1;
+      n.x += n.vx + (mouse.x - W / 2) * 0.00004;
+      n.y += n.vy + (mouse.y - H / 2) * 0.00004;
+      if (n.x < -20 || n.x > W + 20) n.vx *= -1;
+      if (n.y < -20 || n.y > H + 20) n.vy *= -1;
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(143,169,214,0.3)';
+      ctx.fillStyle = n.big ? 'rgba(91,141,239,0.55)' : 'rgba(143,169,214,0.28)';
       ctx.fill();
     });
+    const CONNECT_DIST = Math.max(W, H) * 0.16;
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
         const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
@@ -256,7 +271,7 @@ if (navToggle && mobileMenu) {
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
           ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.strokeStyle = `rgba(91,141,239,${0.1 * (1 - dist / CONNECT_DIST)})`;
+          ctx.strokeStyle = `rgba(91,141,239,${0.09 * (1 - dist / CONNECT_DIST)})`;
           ctx.lineWidth = .6;
           ctx.stroke();
         }
@@ -268,6 +283,47 @@ if (navToggle && mobileMenu) {
   canvas.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
   window.addEventListener('resize', () => { resize(); createNodes(); });
   resize(); createNodes(); draw();
+})();
+
+/* ═══════════════════════════════════════════
+   LIVE TELEMETRY PANEL — simulated ops feed
+═══════════════════════════════════════════ */
+(function initTelemetry() {
+  const log = document.getElementById('tpLog');
+  if (!log) return;
+
+  const EVENTS = [
+    { tag: 'critical', label: 'CRITICAL', msg: 'Suspicious SYN flood pattern flagged', meta: '192.168.1.45:80' },
+    { tag: 'high',     label: 'HIGH',     msg: 'Embedded JS found in PDF payload',     meta: 'sample_report.pdf' },
+    { tag: 'medium',   label: 'MEDIUM',   msg: 'SPF / Return-Path mismatch detected',  meta: 'phish_test.eml' },
+    { tag: 'info',     label: 'INFO',     msg: 'Nmap service scan completed',          meta: '24 ports open' },
+    { tag: 'info',     label: 'INFO',     msg: 'Burp Suite scan session started',      meta: 'staging.target.local' },
+    { tag: 'medium',   label: 'MEDIUM',   msg: 'Outdated TLS cipher suite found',      meta: 'Score: 78/100' },
+    { tag: 'high',     label: 'HIGH',     msg: 'Unauthorized USB device blocked',      meta: 'Storage Blocker' },
+    { tag: 'info',     label: 'INFO',     msg: 'Wireshark capture parsed',             meta: '< 240ms' },
+    { tag: 'critical', label: 'CRITICAL', msg: 'Exploit attempt on CVE-2023-21554',    meta: 'lab-range-03' },
+    { tag: 'info',     label: 'INFO',     msg: 'VulneraSim range reset to baseline',   meta: 'Docker cluster' },
+  ];
+
+  const MAX_ROWS = 4;
+  let idx = 0;
+
+  function addRow() {
+    const e = EVENTS[idx % EVENTS.length];
+    idx++;
+    const row = document.createElement('div');
+    row.className = 'tp-row';
+    row.innerHTML = `
+      <span class="tp-tag ${e.tag}">${e.label}</span>
+      <span class="tp-msg">${e.msg}</span>
+      <span class="tp-meta">${e.meta}</span>
+    `;
+    log.prepend(row);
+    while (log.children.length > MAX_ROWS) log.removeChild(log.lastChild);
+  }
+
+  for (let i = 0; i < MAX_ROWS; i++) addRow();
+  setInterval(addRow, 2600);
 })();
 
 // ── Typed Role Animation ──
