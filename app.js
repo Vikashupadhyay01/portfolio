@@ -230,21 +230,20 @@ if (navToggle && mobileMenu) {
     H = canvas.height = canvas.offsetHeight;
   }
 
-  // Sparse, angular topology — nodes on a loose jittered grid rather than
-  // fully random scatter, so lines read as deliberate network paths.
   function createNodes() {
     nodes = [];
-    const cols = Math.max(5, Math.round(W / 220));
-    const rows = Math.max(4, Math.round(H / 220));
+    const cols = Math.max(5, Math.round(W / 190));
+    const rows = Math.max(4, Math.round(H / 190));
     for (let i = 0; i <= cols; i++) {
       for (let j = 0; j <= rows; j++) {
-        if (Math.random() > 0.62) continue; // skip most grid points → sparse
+        if (Math.random() > 0.78) continue; // skip some grid points → sparse but visible
         nodes.push({
           x: (W / cols) * i + (Math.random() - 0.5) * 90,
           y: (H / rows) * j + (Math.random() - 0.5) * 90,
-          vx: (Math.random() - .5) * .12, vy: (Math.random() - .5) * .12,
-          r: Math.random() * 1.3 + (Math.random() > 0.85 ? 2.2 : 0.9),
-          big: Math.random() > 0.85
+          vx: (Math.random() - .5) * .15, vy: (Math.random() - .5) * .15,
+          r: Math.random() * 1.4 + (Math.random() > 0.82 ? 2.6 : 1.1),
+          big: Math.random() > 0.82,
+          pulse: Math.random() * Math.PI * 2
         });
       }
     }
@@ -252,17 +251,7 @@ if (navToggle && mobileMenu) {
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    nodes.forEach(n => {
-      n.x += n.vx + (mouse.x - W / 2) * 0.00004;
-      n.y += n.vy + (mouse.y - H / 2) * 0.00004;
-      if (n.x < -20 || n.x > W + 20) n.vx *= -1;
-      if (n.y < -20 || n.y > H + 20) n.vy *= -1;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fillStyle = n.big ? 'rgba(91,141,239,0.55)' : 'rgba(143,169,214,0.28)';
-      ctx.fill();
-    });
-    const CONNECT_DIST = Math.max(W, H) * 0.16;
+    const CONNECT_DIST = Math.max(W, H) * 0.2;
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
         const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
@@ -271,18 +260,39 @@ if (navToggle && mobileMenu) {
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
           ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.strokeStyle = `rgba(91,141,239,${0.09 * (1 - dist / CONNECT_DIST)})`;
-          ctx.lineWidth = .6;
+          ctx.strokeStyle = `rgba(91,141,239,${0.22 * (1 - dist / CONNECT_DIST)})`;
+          ctx.lineWidth = .7;
           ctx.stroke();
         }
       }
     }
+    nodes.forEach(n => {
+      n.x += n.vx + (mouse.x - W / 2) * 0.00004;
+      n.y += n.vy + (mouse.y - H / 2) * 0.00004;
+      if (n.x < -20 || n.x > W + 20) n.vx *= -1;
+      if (n.y < -20 || n.y > H + 20) n.vy *= -1;
+      n.pulse += 0.02;
+      const pulseR = n.r * (1 + Math.sin(n.pulse) * 0.25);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, pulseR, 0, Math.PI * 2);
+      ctx.fillStyle = n.big ? 'rgba(91,141,239,0.85)' : 'rgba(143,169,214,0.5)';
+      ctx.fill();
+      if (n.big) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, pulseR * 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(91,141,239,0.08)';
+        ctx.fill();
+      }
+    });
     requestAnimationFrame(draw);
   }
 
   canvas.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
   window.addEventListener('resize', () => { resize(); createNodes(); });
   resize(); createNodes(); draw();
+  // re-measure shortly after load in case fonts/layout shifted canvas size
+  window.addEventListener('load', () => { resize(); createNodes(); });
+  setTimeout(() => { resize(); createNodes(); }, 300);
 })();
 
 /* ═══════════════════════════════════════════
