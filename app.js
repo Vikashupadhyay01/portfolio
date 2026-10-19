@@ -340,8 +340,7 @@ if (navToggle && mobileMenu) {
 (function initTyped() {
   const el = document.getElementById('typedRole');
   if (!el) return;
-  const roles = ['Cyber Security Engineer', 'SOC Analyst', 'Threat Hunter', 'Incident Responder', 'Penetration Tester', 'Blue Team Engineer', 'Bug Bounty Hunter'];
-  let ri = 0, ci = 0, deleting = false;
+const roles = ['Cyber Security Engineer', 'Cyber Forensic Associate', 'SOC Analyst', 'Digital Forensics Analyst', 'Threat Hunter', 'Incident Responder', 'Penetration Tester', 'Blue Team Engineer', 'Bug Bounty Hunter'];  let ri = 0, ci = 0, deleting = false;
   function type() {
     const role = roles[ri];
     if (!deleting) {
