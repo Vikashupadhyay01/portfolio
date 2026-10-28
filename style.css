@@ -515,6 +515,36 @@ body::before{
 .toast-error   .toast-icon{background:rgba(240,100,95,.12);color:var(--red);border:1px solid rgba(240,100,95,.25)}
 .toast-msg{line-height:1.5;color:var(--muted)}
 
+/* ── Certificate Vault Banner ── */
+.vault-wrap{position:relative;z-index:1;padding:20px 0 40px}
+.vault-cta{
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;
+  padding:30px 34px;
+  background:linear-gradient(135deg,rgba(91,141,239,.10),rgba(227,168,87,.05) 70%,rgba(255,255,255,.02));
+  border:1px solid rgba(91,141,239,.3);border-radius:var(--radius-lg);
+  box-shadow:0 20px 56px rgba(0,0,0,.35);
+}
+.vault-info{flex:1;min-width:240px}
+.vault-tag{
+  display:inline-block;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.12em;
+  color:var(--amber);border:1px solid rgba(227,168,87,.35);background:rgba(227,168,87,.08);
+  padding:4px 11px;border-radius:999px;margin-bottom:12px;
+}
+.vault-title{font-family:var(--font-display);font-size:1.4rem;font-weight:600;margin-bottom:6px}
+.vault-desc{font-size:.86rem;color:var(--muted);line-height:1.7}
+.vault-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:15px 30px;border-radius:12px;
+  background:var(--signal);color:#0A0C10;font-weight:700;font-size:.9rem;letter-spacing:.02em;
+  transition:transform .3s var(--ease),background .3s,box-shadow .3s;
+  position:relative;z-index:5;white-space:nowrap;
+}
+.vault-btn:hover{background:#78A2F5;transform:translateY(-3px);box-shadow:0 14px 40px rgba(91,141,239,.35)}
+@media(max-width:700px){
+  .vault-cta{padding:24px 20px}
+  .vault-btn{width:100%;justify-content:center}
+}
 
 /* ═══════════════════════════════════════════
    CLICK FIX + LIVE PROJECT BANNER
