@@ -466,9 +466,9 @@ document.querySelectorAll('[data-tilt]').forEach(card => {
   //          {{from_name}}   {{from_email}}   {{subject}}   {{message}}
   //          "To Email" in template settings → v.vupadhyay0101@gmail.com
   // ════════════════════════════════════════════════════════════
-  const EMAILJS_PUBLIC_KEY  = 'Ys9tLVHNSD_st2zgR';
+    const EMAILJS_PUBLIC_KEY  = 'Ys9tLVHNSD_st2zgR';
   const EMAILJS_SERVICE_ID  = 'service_wh1uhyt';
-  const EMAILJS_TEMPLATE_ID = 'pio2vew';
+  const EMAILJS_TEMPLATE_ID = 'template_wmney38';
   // ════════════════════════════════════════════════════════════
 
   const configured = ![EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID]
