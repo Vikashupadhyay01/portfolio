@@ -134,11 +134,6 @@ document.querySelectorAll('.count').forEach(el => co.observe(el));
         x.beginPath(); x.moveTo(a.x, a.y); x.lineTo(m.x, m.y); x.stroke();
       }
     }
-    if (m.x > 0) {
-      const g = x.createRadialGradient(m.x, m.y, 0, m.x, m.y, 70);
-      g.addColorStop(0, 'rgba(34,211,238,.35)'); g.addColorStop(1, 'rgba(34,211,238,0)');
-      x.fillStyle = g; x.beginPath(); x.arc(m.x, m.y, 70, 0, 7); x.fill();
-    }
     requestAnimationFrame(draw);
   })();
 })();
