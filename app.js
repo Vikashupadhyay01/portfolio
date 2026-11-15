@@ -85,3 +85,57 @@ document.querySelectorAll('.count').forEach(el => co.observe(el));
     sending = false; btn.disabled = false; btn.textContent = 'Send Message';
   });
 })();
+
+// ── Animated network background ──
+(function () {
+  const c = document.getElementById('bg'); if (!c) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const x = c.getContext('2d'); let W, H, P = [], m = { x: -999, y: -999 };
+  function init() {
+    W = c.width = innerWidth; H = c.height = innerHeight;
+    P = Array.from({ length: Math.min(90, Math.round(W * H / 16000)) }, () => ({
+      x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35, r: Math.random() * 1.6 + .8 }));
+  }
+  addEventListener('resize', init); addEventListener('mousemove', e => { m.x = e.clientX; m.y = e.clientY; });
+  init();
+  (function draw() {
+    x.clearRect(0, 0, W, H);
+    for (const p of P) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1; if (p.y < 0 || p.y > H) p.vy *= -1;
+      x.beginPath(); x.arc(p.x, p.y, p.r, 0, 7); x.fillStyle = 'rgba(120,180,255,.7)'; x.fill();
+    }
+    for (let i = 0; i < P.length; i++) {
+      for (let j = i + 1; j < P.length; j++) {
+        const d = Math.hypot(P[i].x - P[j].x, P[i].y - P[j].y);
+        if (d < 140) { x.strokeStyle = 'rgba(80,150,255,' + (0.22 * (1 - d / 140)) + ')'; x.lineWidth = .7; x.beginPath(); x.moveTo(P[i].x, P[i].y); x.lineTo(P[j].x, P[j].y); x.stroke(); }
+      }
+      const dm = Math.hypot(P[i].x - m.x, P[i].y - m.y);
+      if (dm < 170) { x.strokeStyle = 'rgba(34,211,238,' + (0.4 * (1 - dm / 170)) + ')'; x.beginPath(); x.moveTo(P[i].x, P[i].y); x.lineTo(m.x, m.y); x.stroke(); }
+    }
+    requestAnimationFrame(draw);
+  })();
+})();
+
+// ── Live security feed (simulated demo data) ──
+(function () {
+  const log = document.getElementById('feedLog'); if (!log) return;
+  const E = [
+    ['crit', 'CRITICAL', 'SYN flood pattern flagged', 'PCAP'],
+    ['high', 'HIGH', 'Embedded JavaScript in PDF', 'sample.pdf'],
+    ['med', 'MEDIUM', 'SPF / Return-Path mismatch', 'phish.eml'],
+    ['info', 'INFO', 'Nmap service scan completed', '24 ports'],
+    ['high', 'HIGH', 'Unauthorized USB device blocked', 'Blocker'],
+    ['info', 'INFO', 'Wireshark capture parsed', '<240ms'],
+    ['crit', 'CRITICAL', 'Exploit attempt on CVE-2023-21554', 'lab-range'],
+    ['med', 'MEDIUM', 'Suspicious login attempt', 'Wazuh']
+  ];
+  let k = 0;
+  function add() {
+    const e = E[k++ % E.length], r = document.createElement('div');
+    r.className = 'fr'; r.innerHTML = '<b class="' + e[0] + '">' + e[1] + '</b><span>' + e[2] + '</span><i>' + e[3] + '</i>';
+    log.prepend(r); while (log.children.length > 4) log.lastChild.remove();
+  }
+  for (let i = 0; i < 4; i++) add();
+  setInterval(add, 2600);
+})();
