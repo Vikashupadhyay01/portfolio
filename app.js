@@ -5,8 +5,8 @@
 // Leave f as '' to hide that View button until you upload the file.
 const FILES = {
   resume:       { t: 'Resume',                                   f: 'RESUME.pdf' },
-  appreciation: { t: 'Appreciation Letter — NCRB',               f: 'Appreciation letter (National Crime Records Bureau).pdf' }, // ← CHANGE to full file name + extension
-  ncrbCert:     { t: 'Cyber Security Internship — NCRB',         f: 'Cyber Security Internship Certificate(National Crime Records Bureau).png' }, // ← CHANGE to full file name + extension
+  appreciation: { t: 'Appreciation Letter — NCRB',               f: 'Appreciation letter (National Crime Records Bureau).jpeg' }, // ← CHANGE to full file name + extension
+  ncrbCert:     { t: 'Cyber Security Internship — NCRB',         f: 'Cyber Security Internship Certificate(National Crime Records Bureau).jpeg' }, // ← CHANGE to full file name + extension
   criai:        { t: 'Internship Certificate — CRIAI',           f: 'CRIAI_Certificate.png' },
   shentilinix:  { t: 'Internship Certificate — Shentinelix Sphere', f: 'SHENTILINIX SPHERE PVT.LTD_Certificate.png' },
   pentest:      { t: 'Penetration Testing — Security Blue Team', f: 'penetration tester certificate.png' },
