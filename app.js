@@ -5,13 +5,13 @@
 // Leave f as '' to hide that View button until you upload the file.
 const FILES = {
   resume:       { t: 'Resume',                                   f: 'RESUME.pdf' },
-  appreciation: { t: 'Appreciation Letter — NCRB',               f: 'Appreciation letter (National Crime Records Bureau).jpeg' }, // ← CHANGE to full file name + extension
-  ncrbCert:     { t: 'Cyber Security Internship — NCRB',         f: 'Cyber Security Internship Certificate(National Crime Records Bureau).jpeg' }, // ← CHANGE to full file name + extension
+  appreciation: { t: 'Appreciation Letter — NCRB',               f: 'Appreciation letter (National Crime Records Bureau).pdf' }, // ← CHANGE to full file name + extension
+  ncrbCert:     { t: 'Cyber Security Internship — NCRB',         f: 'Cyber Security Internship Certificate(National Crime Records Bureau).png' }, // ← CHANGE to full file name + extension
   criai:        { t: 'Internship Certificate — CRIAI',           f: 'CRIAI_Certificate.png' },
   shentilinix:  { t: 'Internship Certificate — Shentinelix Sphere', f: 'SHENTILINIX SPHERE PVT.LTD_Certificate.png' },
   pentest:      { t: 'Penetration Testing — Security Blue Team', f: 'penetration tester certificate.png' },
   nptel:        { t: 'Foundation of Cloud, IoT & Edge ML — NPTEL', f: 'Internet fo things.png' },
-  cisco:        { t: 'Ethical Hacker — Cisco Networking Academy', f: '' }, // upload the file to GitHub, then put its name here
+  cisco:        { t: 'Ethical Hacker — Cisco Networking Academy', f: 'Ethical_Hacker_certificate.jpg' },
   vitCtf:       { t: 'CyberCell VIT CTF',                        f: 'CYBERCELL VIT CTF.png' },
   armyReport:   { t: 'Indian Army CTF Report',                   f: 'Indian Army CTF Report.pdf' }
 };
