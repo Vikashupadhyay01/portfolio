@@ -1,5 +1,21 @@
 // Vikash Upadhyay — Portfolio
 
+// ── Documents / certificates (file names must match the files in your GitHub repo) ──
+// t = title shown in the popup, f = exact file name (with extension).
+// Leave f as '' to hide that View button until you upload the file.
+const FILES = {
+  resume:       { t: 'Resume',                                   f: 'RESUME.pdf' },
+  appreciation: { t: 'Appreciation Letter — NCRB',               f: 'Appreciation letter (National Crime Records Bureau).pdf' }, // ← CHANGE to full file name + extension
+  ncrbCert:     { t: 'Cyber Security Internship — NCRB',         f: 'Cyber Security Internship Certificate(National Crime Records Bureau).png' }, // ← CHANGE to full file name + extension
+  criai:        { t: 'Internship Certificate — CRIAI',           f: 'CRIAI_Certificate.png' },
+  shentilinix:  { t: 'Internship Certificate — Shentinelix Sphere', f: 'SHENTILINIX SPHERE PVT.LTD_Certificate.png' },
+  pentest:      { t: 'Penetration Testing — Security Blue Team', f: 'penetration tester certificate.png' },
+  nptel:        { t: 'Foundation of Cloud, IoT & Edge ML — NPTEL', f: 'Internet fo things.png' },
+  cisco:        { t: 'Ethical Hacker — Cisco Networking Academy', f: '' }, // upload the file to GitHub, then put its name here
+  vitCtf:       { t: 'CyberCell VIT CTF',                        f: 'CYBERCELL VIT CTF.png' },
+  armyReport:   { t: 'Indian Army CTF Report',                   f: 'Indian Army CTF Report.pdf' }
+};
+
 // ── Navbar: shadow on scroll + mobile menu ──
 const nav = document.getElementById('nav');
 const links = document.getElementById('links');
@@ -7,6 +23,62 @@ const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 20);
 window.addEventListener('scroll', onScroll); onScroll();
 document.getElementById('burger').addEventListener('click', () => links.classList.toggle('open'));
 links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+// ── Document viewer (View button → popup preview, download only on demand) ──
+(function () {
+  const modal = document.getElementById('docModal');
+  const body = document.getElementById('docBody');
+  const title = document.getElementById('docTitle');
+  const dl = document.getElementById('docDl');
+  const op = document.getElementById('docOpen');
+  const closeBtn = document.getElementById('docClose');
+  let lastBtn = null;
+
+  // hide View buttons whose file is not set yet
+  document.querySelectorAll('[data-view]').forEach(b => {
+    const d = FILES[b.dataset.view];
+    if (!d || !d.f) b.hidden = true;
+  });
+
+  function open(key, btn) {
+    const d = FILES[key]; if (!d || !d.f) return;
+    const url = encodeURI(d.f);
+    lastBtn = btn || null;
+    title.textContent = d.t;
+    dl.href = url; dl.setAttribute('download', d.f);
+    op.href = url;
+    body.innerHTML = '';
+    const isPdf = d.f.toLowerCase().endsWith('.pdf');
+    let el;
+    if (isPdf) {
+      el = document.createElement('iframe');
+      el.src = url; el.title = d.t;
+    } else {
+      el = document.createElement('img');
+      el.src = url; el.alt = d.t;
+      el.onerror = () => { body.innerHTML = '<p class="nofile">File not found. Check the file name in app.js.</p>'; };
+    }
+    body.appendChild(el);
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function close() {
+    modal.classList.remove('open');
+    body.innerHTML = '';
+    document.body.style.overflow = '';
+    if (lastBtn) lastBtn.focus();
+  }
+
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-view]');
+    if (b) { e.preventDefault(); open(b.dataset.view, b); }
+  });
+  closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', e => { if (e.target === modal) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) close(); });
+})();
 
 // ── Typed role ──
 (function () {
